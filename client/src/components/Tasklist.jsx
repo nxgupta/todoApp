@@ -4,7 +4,7 @@ import Taskform from "./Taskform";
 import Task from "./Task";
 import axios from "axios";
 import loader from "../assets/loader.gif";
-
+let URL = import.meta.env.VITE_BACKEND_URL;
 const Tasklist = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -30,7 +30,7 @@ const Tasklist = () => {
     else {
       try {
         setIsLoading(true);
-        await axios.post("api/task", formData);
+        await axios.post(`${URL}/api/task`, formData);
         toast.success("Task created successfully", {
           position: toast.POSITION.TOP_CENTER,
         });
@@ -49,7 +49,7 @@ const Tasklist = () => {
   const getTasks = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get("api/task");
+      const response = await axios.get(`${URL}/api/task`);
       setIsLoading(false);
       setTasks(response.data);
       setCompletedTasks(response.data.filter((task) => task.completed));
@@ -64,7 +64,7 @@ const Tasklist = () => {
   const deleteTask = async (id) => {
     try {
       setIsLoading(true);
-      await axios.delete(`api/task/${id}`);
+      await axios.delete(`${URL}/api/task/${id}`);
       toast.success("Task deleted successfully", {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -81,7 +81,7 @@ const Tasklist = () => {
   const completeTask = async (id) => {
     try {
       setIsLoading(true);
-      await axios.put(`api/task/${id}`, { completed: true });
+      await axios.put(`${URL}/api/task/${id}`, { completed: true });
       toast.success("Task completed successfully", {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -110,7 +110,7 @@ const Tasklist = () => {
         return;
       }
       setIsLoading(true);
-      await axios.put(`api/task/${editId}`, formData);
+      await axios.put(`${URL}/api/task/${editId}`, formData);
       toast.success("Task updated successfully", {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -131,6 +131,7 @@ const Tasklist = () => {
 
   return (
     <>
+      <h2 className="--flex-center">Task Manager</h2>
       <Taskform
         createTask={createTask}
         taskName={name}
